@@ -27,6 +27,10 @@ public class ProdutoModel implements Serializable {
     )
     Set<CarrinhoModel> carrinho = new HashSet<>();
 
+    @ManyToOne
+    @JoinColumn(name = "estoque_id")
+    EstoqueModel estoque;
+
     public UUID getId() {
         return id;
     }

@@ -24,10 +24,7 @@ public class CarrinhoController {
     public CarrinhoModel addNoCarrinho(HttpSession session){
         CarrinhoModel carrinho = (CarrinhoModel) session.getAttribute("carrinho");
 
-        if (carrinho == null) {
-            carrinho = new CarrinhoModel();
-            session.setAttribute("carrinho", carrinho);
-        }
+
         return carrinho;
     }
 

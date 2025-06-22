@@ -18,6 +18,7 @@ public class EstoqueModel implements Serializable {
 
     private String tipo; // tipo de operação, se é uma entrada no estoque ou saida
 
+    @OneToMany(mappedBy = "estoque", cascade = CascadeType.ALL)
     private Set<ProdutoModel> produto; // lista de todos os produtos cadastrados no estoque
 
 
