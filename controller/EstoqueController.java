@@ -25,17 +25,17 @@ public class EstoqueController {
     ProdutoRepositorie produtoRepositorie;
 
     @PostMapping("/estoque")
-    public ResponseEntity<EstoqueModel> adicionar(@RequestBody ProdutoDTO produtoDTO){
+    public ResponseEntity<ProdutoModel> adicionar(@RequestBody ProdutoDTO produtoDTO){
         ProdutoModel produto = new ProdutoModel();
         produto.setName(produtoDTO.name());
         produto.setPreco(produtoDTO.price());
-        produtoRepositorie.save(produto);
+        //produtoRepositorie.save(produto);
 
         EstoqueModel estoqueModel = new EstoqueModel();
         estoqueModel.setProduto((Set<ProdutoModel>) produto);
         estoqueModel.setTipo("ENTRADA");
         estoqueModel.setQtd(5);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(estoqueRepositorie.save(estoqueModel));
+        return ResponseEntity.status(HttpStatus.CREATED).body(produtoRepositorie.save(produto));/*estoqueRepositorie.save(estoqueModel)*/
     }
 }

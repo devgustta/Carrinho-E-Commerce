@@ -22,7 +22,9 @@ public class User implements UserDetails {
 
     private String password;
 
+    @Enumerated(EnumType.STRING)
     private UserRoles role;
+
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "carrinho_id", referencedColumnName = "id")
