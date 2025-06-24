@@ -25,20 +25,25 @@ public class securityFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         var token = this.recoverToken(request);
-        if(token != null){
-            var subject = tokenService.validateToken(token); // pega o token do recoverToken caso exista e valida ele esse token retornando o usuario
+        if (token != null) {
+            var subject = tokenService.validateToken(token); // pega o login (username)
             UserDetails user = userRepositorie.findByLogin(subject);
 
-            var authentication = new UsernamePasswordAuthenticationToken(user,null,user.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+            if (user != null) {
+                var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            } else {
+                System.out.println("Usuário não encontrado para o subject extraído do token: " + subject);
+            }
         }
         filterChain.doFilter(request,response); // chamando o filtro giagnte da classse do securiryConfiguration
+        System.out.println("Authorization Header: " + request.getHeader("Authorization"));
     }
 
     // verifica se o token é valido
     private String recoverToken(HttpServletRequest request){
         var authHeader = request.getHeader("Authorization");
         if(authHeader == null) return null;
-        return authHeader.replace("Bearer", ""); // substitui o Bearer por uma string vazia para termos só a informação do login
+        return authHeader.replace("Bearer ", ""); // substitui o Bearer por uma string vazia para termos só a informação do login
     }
 }

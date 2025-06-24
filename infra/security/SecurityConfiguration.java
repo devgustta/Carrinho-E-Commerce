@@ -31,7 +31,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/cadastro").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/estoque").hasRole("ADMIN")
                         .anyRequest().authenticated()// qualquer rota desde que esteja autenticado
                 )// quais requisições autorizamos para quais rotas
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)// antes do build e fazer o bloqueio dos requests acima caso seje necessario, tem que fazer esse filtros

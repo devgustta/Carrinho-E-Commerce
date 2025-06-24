@@ -17,7 +17,8 @@ import java.time.ZoneOffset;
 public class TokenService {
 
     @Value("${api.security.token.security}")
-    private String secret;
+    private String secret = "my-secret-key"; // só para garantir que vem corretamente
+
 
     public String generateToken(User user){
         try{
@@ -34,16 +35,19 @@ public class TokenService {
     }
 
     public String validateToken(String token){
-        try{
+        try {
+            System.out.println("🔐 SECRET em uso: " + secret);
             Algorithm algorithm = Algorithm.HMAC256(secret);
-            return JWT.require(algorithm)
-                    .withIssuer("api-auth") // quem foi o emissor(no caso fomos nós)
+            var decoded = JWT.require(algorithm)
+                    .withIssuer("api-auth")
                     .build()
-                    .verify(token) // descriptografando o token
-                    .getSubject(); // pegando o conteudo
-
-        }catch (JWTVerificationException exception){
-            return "";
+                    .verify(token);
+            String subject = decoded.getSubject();
+            System.out.println("✅ Subject extraído do token: " + subject);
+            return subject;
+        } catch (JWTVerificationException e){
+            System.out.println("❌ Erro ao validar token: " + e.getMessage());
+            return null;
         }
     }
 
